@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * This script executes `npm outdated` and enriches outdated packages with
  * information possibly documented in the package.json.md file. To get the

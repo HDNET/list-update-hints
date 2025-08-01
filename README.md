@@ -38,6 +38,9 @@ $ npm i -D @hdnet/list-update-hints
 3. Run script
 ```bash
 $ hdnet-list-update-hints
+
+# use option --without-hints to display updatable packages only
+$ hdnet-list-update-hints --without-hints
 ```
 
 

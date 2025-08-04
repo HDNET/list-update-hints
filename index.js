@@ -12,7 +12,7 @@ import { exec } from 'node:child_process'
 
 const CMD_NPM_OUTDATED = 'npm outdated --json'
 const FILE_PACKAGE_JSON_MD = './package.json.md'
-const REGEXP_PACKAGE_ENTRY_TPL = `Update Hints[\\s\\S]*[*-] \`{PACKAGE_NAME}(@.*)?\` (.*)\n`
+const REGEXP_PACKAGE_ENTRY_TPL = `Update Hints[\\s\\S]*[*-] \`{PACKAGE_NAME}(@.*)?\` ((?:(?!@http).)+)?(@http.*)?\n`
 
 const readPackageJsonMd = () => {
   try {
@@ -28,8 +28,10 @@ const addHintsFromPackageJsonMd = (outdated) => {
 
   Object.entries(outdated).forEach(([outdatedName, outdatedVersions]) => {
     const versionHints = mdContents.match(new RegExp(REGEXP_PACKAGE_ENTRY_TPL.replace('{PACKAGE_NAME}', outdatedName)))
-    const hint = versionHints && versionHints.length > 1 ? versionHints[versionHints.length - 1] : ''
+    const hint = versionHints && versionHints.length > 2 && versionHints[2] ? versionHints[2] : ''
+    const issue = versionHints && versionHints.length > 3 && versionHints[3] ? versionHints[3] : ''
     outdated[outdatedName].hint = hint.length > 60 ? `${hint.substring(0, 55)}[...]` : hint
+    outdated[outdatedName].issue = issue?.length ? issue.match(/([^\/]+)\/?$/)[0] : issue
   })
 
   return outdated
@@ -45,7 +47,7 @@ const show = (all, withoutHints = false) => {
     }, {})
     : all
 
-  console.table(output, ['current', 'wanted', 'latest', 'hint'])
+  console.table(output, ['current', 'wanted', 'latest', 'hint', 'issue'])
 }
 
 exec(CMD_NPM_OUTDATED, (error, stdout, stderr) => {

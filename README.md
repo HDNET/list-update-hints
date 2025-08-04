@@ -31,8 +31,9 @@ $ npm i -D @hdnet/list-update-hints
 ```markdown
 # Update Hints
 - `nuxt` v2 is EOL - plan the migration in the next sprints!
-- `eslint` run tests for custom plugins before updating!
+- `eslint` run tests for custom plugins before updating! @https://some-ticket-system/MYTICKET-1234
 - `stylelint` we have to update to at least node@18.12.0 to update to stylelint@16
+- `hdnet-list-update-hints` issue feature is missing @https://github.com/HDNET/list-update-hints/issues/1
 ```
 
 3. Run script

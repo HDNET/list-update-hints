@@ -1,6 +1,6 @@
 {
     "name": "@hdnet/list-update-hints",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Script to list custom hints to updatable dependencies",
     "author": "HDNET",
     "type": "module",

@@ -13,7 +13,7 @@ dependencies. You can use it for i.e.
 The entries must appear after a title `Update Hints` and follow the syntax:
 
 ```markdown
-- `<package>` some info about the update of the package
+- `<package>` some info about the update of the package @https://some-ticket-system/MYTICKET-1234
 ```
 
 If you then run `hdnet-list-update-hints`, the script will list available updates using `npm outdated`

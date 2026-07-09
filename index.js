@@ -4,12 +4,16 @@
  * This script executes `npm outdated` and enriches outdated packages with
  * information possibly documented in the package.json.md file. To get the
  * information grepped from the package.json.md file, an entry must match the
- * RegExp `REGEXP_PACKAGE_ENTRY_TPL`.
+ * RegExp `REGEXP_PACKAGE_ENTRY_TPL` (have a lokk in README.md for examples).
  */
 
 import fs from 'node:fs'
 import { exec } from 'node:child_process'
 
+const DEFAULT_PACKAGE_JSON_MD_CONTENT = `# [package.json](https://docs.npmjs.com/cli/v11/configuring-npm/package-json)
+
+## Update Hints
+`
 const CMD_NPM_OUTDATED = 'npm outdated --json'
 const FILE_PACKAGE_JSON_MD = './package.json.md'
 const REGEXP_PACKAGE_ENTRY_TPL = `Update Hints[\\s\\S]*[*-] \`{PACKAGE_NAME}(@.*)?\` ((?:(?!@http).)+)?(@http.*)?\n`
@@ -18,8 +22,18 @@ const readPackageJsonMd = () => {
   try {
     return fs.readFileSync(FILE_PACKAGE_JSON_MD, 'utf-8')
   } catch (error) {
-    console.error(`error: ${error?.message}`)
-    process.exit()
+    if (error?.code === 'ENOENT') {
+      try {
+        fs.writeFileSync(FILE_PACKAGE_JSON_MD, DEFAULT_PACKAGE_JSON_MD_CONTENT, 'utf-8')
+        return DEFAULT_PACKAGE_JSON_MD_CONTENT
+      } catch (writeError) {
+        console.error(`error: ${writeError?.message}`)
+        process.exit()
+      }
+    } else {
+      console.error(`error: ${error?.message}`)
+      process.exit()
+    }
   }
 }
 

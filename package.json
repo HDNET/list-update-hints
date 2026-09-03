@@ -27,7 +27,7 @@
         "prepare": "husky || exit 0"
     },
     "devDependencies": {
-        "@commitlint/cli": "^21.2.1",
+        "@commitlint/cli": "^21.2.2",
         "@hdnet/commitlint-config": "^1.0.2",
         "husky": "^9.1.7"
     }
